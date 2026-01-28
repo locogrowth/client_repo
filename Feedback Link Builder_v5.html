@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="de" data-color-scheme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Feedback Link Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* ===== PERPLEXITY DESIGN SYSTEM (truncated to essentials) ===== */
+    :root {
+      --color-white: rgba(255, 255, 255, 1);
+      --color-cream-50: rgba(252, 252, 249, 1);
+      --color-cream-100: rgba(255, 255, 253, 1);
+      --color-gray-200: rgba(245, 245, 245, 1);
+      --color-gray-300: rgba(167, 169, 169, 1);
+      --color-gray-400: rgba(119, 124, 124, 1);
+      --color-slate-500: rgba(98, 108, 113, 1);
+      --color-brown-600: rgba(94, 82, 64, 1);
+      --color-charcoal-700: rgba(31, 33, 33, 1);
+      --color-charcoal-800: rgba(38, 40, 40, 1);
+      --color-slate-900: rgba(19, 52, 59, 1);
+      --color-teal-300: rgba(50, 184, 198, 1);
+      --color-teal-400: rgba(45, 166, 178, 1);
+      --color-teal-500: rgba(33, 128, 141, 1);
+      --color-teal-600: rgba(29, 116, 128, 1);
+      --color-teal-700: rgba(26, 104, 115, 1);
+      --color-red-400: rgba(255, 84, 89, 1);
+      --color-red-500: rgba(192, 21, 47, 1);
+
+      --color-brown-600-rgb: 94, 82, 64;
+      --color-teal-500-rgb: 33, 128, 141;
+      --color-slate-900-rgb: 19, 52, 59;
+      --color-slate-500-rgb: 98, 108, 113;
+      --color-red-500-rgb: 192, 21, 47;
+
+      --color-background: var(--color-cream-50);
+      --color-surface: var(--color-cream-100);
+      --color-text: var(--color-slate-900);
+      --color-text-secondary: var(--color-slate-500);
+      --color-primary: var(--color-teal-500);
+      --color-primary-hover: var(--color-teal-600);
+      --color-primary-active: var(--color-teal-700);
+      --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+      --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+      --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+      --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+      --color-btn-primary-text: var(--color-cream-50);
+      --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+      --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+      --color-error: var(--color-red-500);
+      --color-success: var(--color-teal-500);
+      --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+
+      --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+        BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+        Monaco, Consolas, monospace;
+      --font-size-base: 14px;
+      --font-size-sm: 12px;
+      --font-size-lg: 16px;
+      --font-size-xl: 18px;
+      --font-weight-normal: 400;
+      --font-weight-medium: 500;
+      --font-weight-semibold: 550;
+      --line-height-normal: 1.5;
+
+      --space-4: 4px;
+      --space-8: 8px;
+      --space-12: 12px;
+      --space-16: 16px;
+      --space-20: 20px;
+      --space-24: 24px;
+      --space-32: 32px;
+
+      --radius-sm: 6px;
+      --radius-base: 8px;
+      --radius-lg: 12px;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+        0 2px 4px -1px rgba(0, 0, 0, 0.02);
+
+      --focus-ring: 0 0 0 3px var(--color-focus-ring);
+    }
+
+    html {
+      font-size: var(--font-size-base);
+      font-family: var(--font-family-base);
+      line-height: var(--line-height-normal);
+      color: var(--color-text);
+      background-color: var(--color-background);
+      -webkit-font-smoothing: antialiased;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-background);
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: var(--space-24) var(--space-16) var(--space-32);
+    }
+
+    h1 {
+      margin: 0 0 var(--space-8);
+      font-size: 24px;
+      font-weight: var(--font-weight-semibold);
+      letter-spacing: -0.01em;
+    }
+
+    h2 {
+      margin: 0 0 var(--space-8);
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    p {
+      margin: 0 0 var(--space-12);
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-sm);
+    }
+
+    .card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-card-border);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-20);
+      margin-top: var(--space-16);
+    }
+
+    .card + .card {
+      margin-top: var(--space-16);
+    }
+
+    .form-row {
+      display: flex;
+      gap: var(--space-12);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-12);
+    }
+
+    .form-group {
+      flex: 1 1 0;
+      min-width: 160px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: var(--space-4);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text);
+    }
+
+    .form-control {
+      display: block;
+      width: 100%;
+      padding: var(--space-8) var(--space-12);
+      font-size: var(--font-size-base);
+      color: var(--color-text);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-base);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: var(--focus-ring);
+    }
+
+    .form-control::placeholder {
+      color: var(--color-gray-300);
+    }
+
+    .helper-text {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      margin-top: 2px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8) var(--space-16);
+      border-radius: var(--radius-base);
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-medium);
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .btn-primary {
+      background-color: var(--color-primary);
+      color: var(--color-btn-primary-text);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-primary-hover);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:active {
+      background-color: var(--color-primary-active);
+      transform: translateY(1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-secondary {
+      background-color: var(--color-secondary);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--color-secondary-hover);
+    }
+
+    .btn-icon {
+      padding-inline: var(--space-8);
+      min-width: 36px;
+    }
+
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: var(--font-size-sm);
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+    }
+
+    .error {
+      color: var(--color-error);
+      font-size: var(--font-size-sm);
+      margin-top: var(--space-4);
+    }
+
+    .status {
+      margin-top: var(--space-8);
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+    }
+
+    .status-success {
+      color: var(--color-success);
+    }
+
+    .status-error {
+      color: var(--color-error);
+    }
+
+    .link-row {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) auto;
+      gap: var(--space-8);
+      align-items: flex-end;
+      margin-bottom: var(--space-8);
+    }
+
+    @media (max-width: 720px) {
+      .link-row {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+      }
+    }
+
+    .output-area {
+      margin-top: var(--space-12);
+      padding: var(--space-12);
+      border-radius: var(--radius-base);
+      background-color: var(--color-gray-200);
+      border: 1px solid var(--color-card-border-inner);
+      max-height: 260px;
+      overflow-y: auto;
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-sm);
+      white-space: nowrap;
+    }
+
+    .output-link {
+      display: block;
+      margin-bottom: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .output-link:last-child {
+      margin-bottom: 0;
+    }
+
+    .output-link a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .output-link a:hover {
+      text-decoration: underline;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: var(--font-size-sm);
+      background: var(--color-secondary);
+      color: var(--color-text-secondary);
+      margin-left: var(--space-8);
+    }
+
+    .tag code {
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-sm);
+    }
+
+    .tooltip-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      margin-left: var(--space-8);
+    }
+
+    .tooltip-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--color-secondary);
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: help;
+      transition: background-color 0.15s ease;
+    }
+
+    .tooltip-icon:hover {
+      background-color: var(--color-secondary-hover);
+    }
+
+    .tooltip-text {
+      display: none;
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--color-text);
+      color: var(--color-surface);
+      padding: var(--space-8) var(--space-12);
+      border-radius: var(--radius-sm);
+      font-size: var(--font-size-sm);
+      line-height: 1.4;
+      white-space: nowrap;
+      z-index: 1000;
+      margin-bottom: 8px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .tooltip-text::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--color-text);
+    }
+
+    .tooltip-container:hover .tooltip-text {
+      display: block;
+    }
+
+    .flex-row {
+      display: flex;
+      gap: var(--space-8);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .mt-8 { margin-top: var(--space-8); }
+    .mt-12 { margin-top: var(--space-12); }
+    .mt-16 { margin-top: var(--space-16); }
+
+    .mb-4 { margin-bottom: var(--space-4); }
+    .mb-8 { margin-bottom: var(--space-8); }
+
+    .text-right { text-align: right; }
+
+    .language-toggle {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-16);
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: var(--space-8) var(--space-12);
+      border: 1px solid var(--color-border);
+      background-color: var(--color-surface);
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      border-radius: var(--radius-base);
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .toggle-btn.active {
+      background-color: var(--color-primary);
+      color: var(--color-btn-primary-text);
+      border-color: var(--color-primary);
+    }
+
+    .toggle-btn:hover:not(.active) {
+      background-color: var(--color-secondary);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .collapse-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-lg);
+      transition: transform 0.3s ease;
+    }
+
+    .collapse-icon.collapsed {
+      transform: rotate(-90deg);
+    }
+
+    .card-content {
+      max-height: 2000px;
+      overflow: hidden;
+      transition: max-height 0.3s ease, margin-top 0.3s ease;
+      margin-top: var(--space-12);
+    }
+
+    .card-content.collapsed {
+      max-height: 0;
+      margin-top: 0;
+    }
+
+    @font-face {
+      font-family: 'FKGroteskNeue';
+      src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+        format('woff2');
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Feedback Link Builder</h1>
+      <p>
+        Create clickable links with URL parameters that you can copy and paste directly into Gmail.
+        The links contain a fixed email identifier (<code>email</code>) and a customizable
+        feedback tag (<code>feedback_formular</code>).
+      </p>
+    </header>
+
+    <div class="language-toggle">
+      <button type="button" class="toggle-btn active" id="langDE" data-lang="de">DE</button>
+      <button type="button" class="toggle-btn" id="langEN" data-lang="en">EN</button>
+    </div>
+
+    <section class="card" aria-label="Base Settings">
+      <h2>1. Base Settings</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="baseUrl">Form URL (without parameters)</label>
+          <input
+            id="baseUrl"
+            class="form-control"
+            type="url"
+            placeholder="https://example.com/form"
+            value="https://1r4oi.share.hsforms.com/2Tcuo1CR-R9eJn9JKjdJ2aQ"
+            autocomplete="off"
+          />
+          <div class="helper-text">
+            The URL of your web form. Parameters will be added automatically.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="emailIdentifier">
+            Email Identifier (<code>email</code>)
+          </label>
+          <input
+            id="emailIdentifier"
+            class="form-control"
+            type="email"
+            placeholder="user@example.com"
+            autocomplete="off"
+          />
+          <div class="helper-text">
+            Will be used as the value for the <code>email</code> parameter.
+          </div>
+        </div>
+      </div>
+
+      <div id="baseError" class="error" aria-live="polite"></div>
+    </section>
+
+    <section class="card" aria-label="Create Links">
+      <div class="card-header" id="card2Toggle">
+        <div class="flex-row mb-0">
+          <h2 class="mb-0">2. Link Builder</h2>
+          <div class="tooltip-container">
+            <span class="tooltip-icon" id="urlStructureTooltipIcon" title="URL structure: [Base URL]?email=[Email]&amp;feedback_formular=[Tag]">?</span>
+            <div class="tooltip-text" id="urlStructureTooltipText">
+              URL structure:<br/>
+              [Base URL]?email=[Email]&amp;<span id="paramKeyPreview">feedback_formular</span>=[Tag]
+            </div>
+          </div>
+        </div>
+        <span class="collapse-icon" id="card2Icon">▼</span>
+      </div>
+
+      <div class="card-content" id="card2Content">
+        <div id="linkRows"></div>
+
+        <div class="flex-row mt-8">
+          <button type="button" class="btn btn-secondary btn-sm btn-icon" id="addRowBtn" aria-label="Add link row">
+            + Row
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm btn-icon" id="removeRowBtn" aria-label="Remove link row">
+            − Row
+          </button>
+        </div>
+
+        <div id="rowsError" class="error" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Generate and Output">
+      <div class="flex-row mb-8">
+        <h2 class="mb-0">3. Generate Links</h2>
+      </div>
+
+      <div class="flex-row">
+        <button type="button" class="btn btn-primary" id="generateBtn">
+          Generate Links
+        </button>
+        <button type="button" class="btn btn-secondary" id="copyRichTextBtn" disabled>
+          Copy links as rich text
+        </button>
+      </div>
+
+      <div id="generateStatus" class="status" aria-live="polite"></div>
+
+      <div class="mt-12">
+        <label class="form-label">Output (clickable links, one per row)</label>
+        <div id="outputArea" class="output-area" aria-live="polite"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const baseUrlInput = document.getElementById('baseUrl');
+      const emailInput = document.getElementById('emailIdentifier');
+      const baseError = document.getElementById('baseError');
+      const rowsError = document.getElementById('rowsError');
+      const linkRowsContainer = document.getElementById('linkRows');
+      const addRowBtn = document.getElementById('addRowBtn');
+      const removeRowBtn = document.getElementById('removeRowBtn');
+      const generateBtn = document.getElementById('generateBtn');
+      const copyRichTextBtn = document.getElementById('copyRichTextBtn');
+      const outputArea = document.getElementById('outputArea');
+      const generateStatus = document.getElementById('generateStatus');
+
+      const STORAGE_KEY = 'feedbackLinkBuilderState_v1';
+      const COLLAPSE_KEY = 'feedbackLinkBuilderCollapse_v1';
+
+      let currentLanguage = 'de';
+      let isCard2Collapsed = true;
+
+      const translations = {
+        de: {
+          baseUrl: 'https://1r4oi.share.hsforms.com/2Tcuo1CR-R9eJn9JKjdJ2aQ',
+          paramKey: 'feedback_formular',
+          rows: [
+            { anchor: 'Event findet nicht statt oder wurde verschoben', tag: 'no_event' },
+            { anchor: 'Angebot passte nicht zu unserem Budget', tag: 'too_expensive' },
+            { anchor: 'Standort der Location war für uns nicht passend', tag: 'unsuitable_location' },
+            { anchor: 'Location passte nicht (Größe, Ausstattung, Barrierefreiheit etc.)', tag: 'venue_not_fit' },
+            { anchor: 'Sonstiges', tag: 'other' }
+          ]
+        },
+        en: {
+          baseUrl: 'https://1r4oi.share.hsforms.com/2DQGXQYySQturyu1l2pVf0w',
+          paramKey: 'feedback_formular',
+          rows: [
+            { anchor: 'Event will not take place or was postponed', tag: 'no_event' },
+            { anchor: 'The offer did not fit our budget', tag: 'too_expensive' },
+            { anchor: 'The location’s area was not suitable for us', tag: 'unsuitable_location' },
+            { anchor: 'The venue did not meet our requirements (size, facilities, accessibility, etc.)', tag: 'venue_not_fit' },
+            { anchor: 'Other reason', tag: 'Other reason reasonother' }
+          ]
+        }
+      };
+
+      function getParamKey() {
+        return (translations[currentLanguage] && translations[currentLanguage].paramKey) ? translations[currentLanguage].paramKey : 'feedback_formular';
+      }
+
+      function updateParamKeyUI() {
+        const paramKey = getParamKey();
+
+        const tooltipIcon = document.getElementById('urlStructureTooltipIcon');
+        const tooltipText = document.getElementById('urlStructureTooltipText');
+        const paramKeyPreview = document.getElementById('paramKeyPreview');
+
+        if (tooltipIcon) {
+          tooltipIcon.title = 'URL structure: [Base URL]?email=[Email]&' + paramKey + '=[Tag]';
+        }
+
+        if (paramKeyPreview) {
+          paramKeyPreview.textContent = paramKey;
+        }
+
+        if (tooltipText && !paramKeyPreview) {
+          tooltipText.innerHTML = 'URL structure:<br/>[Base URL]?email=[Email]&' + paramKey + '=[Tag]';
+        }
+
+        const tagLabels = linkRowsContainer.querySelectorAll('.tag-label');
+        tagLabels.forEach((lbl) => {
+          lbl.textContent = 'URL Parameter Value (' + paramKey + ')';
+        });
+      }
+
+      let lastGeneratedLinks = [];
+
+      async function copyLinksAsRichText() {
+        clearMessages();
+        if (!lastGeneratedLinks.length) {
+          generateStatus.textContent = 'Nothing to copy yet. Generate links first.';
+          generateStatus.className = 'status status-error';
+          return;
+        }
+
+        const htmlParts = lastGeneratedLinks.map((l) => {
+          const safeText = escapeHtml(l.anchor);
+          const safeHref = escapeAttribute(l.href);
+          return '<a href="' + safeHref + '">' + safeText + '</a>';
+        });
+
+        const htmlPayload = htmlParts.join('<br>');
+        const textPayload = lastGeneratedLinks.map((l) => l.anchor + ' - ' + l.href).join('\n');
+
+        try {
+          await writeToClipboard({ html: htmlPayload, text: textPayload });
+          generateStatus.textContent = 'Links copied as rich text. Paste into Gmail.';
+          generateStatus.className = 'status status-success';
+        } catch (e) {
+          generateStatus.textContent = 'Copy failed in this browser. You can still copy links from the output list.';
+          generateStatus.className = 'status status-error';
+        }
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function escapeAttribute(str) {
+        return escapeHtml(str).replace(/[\r\n]/g, '');
+      }
+
+      async function writeToClipboard({ html, text }) {
+        // Best case: write both HTML + plain text
+        if (navigator.clipboard && window.ClipboardItem) {
+          const htmlBlob = new Blob([html], { type: 'text/html' });
+          const textBlob = new Blob([text], { type: 'text/plain' });
+          const item = new ClipboardItem({ 'text/html': htmlBlob, 'text/plain': textBlob });
+          await navigator.clipboard.write([item]);
+          return;
+        }
+
+        // Fallback 1: try rich-text copy via execCommand
+        try {
+          const div = document.createElement('div');
+          div.contentEditable = 'true';
+          div.style.position = 'fixed';
+          div.style.left = '-9999px';
+          div.style.top = '0';
+          div.style.whiteSpace = 'pre-wrap';
+          div.innerHTML = html;
+          document.body.appendChild(div);
+
+          const range = document.createRange();
+          range.selectNodeContents(div);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+
+          const ok = document.execCommand('copy');
+          sel.removeAllRanges();
+          document.body.removeChild(div);
+
+          if (ok) return;
+        } catch (e) {
+          // ignore
+        }
+
+        // Fallback 2: plain text copy
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+
+        // Fallback 3: legacy plain text
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+
+
+      function applyCollapseUI() {
+        const card2Content = document.getElementById('card2Content');
+        const card2Icon = document.getElementById('card2Icon');
+        if (!card2Content || !card2Icon) return;
+        card2Content.classList.toggle('collapsed', isCard2Collapsed);
+        card2Icon.classList.toggle('collapsed', isCard2Collapsed);
+      }
+
+      function createRow(anchorValue = '', tagValue = '') {
+        const row = document.createElement('div');
+        row.className = 'link-row';
+
+        const anchorGroup = document.createElement('div');
+        anchorGroup.className = 'form-group';
+        const anchorLabel = document.createElement('label');
+        anchorLabel.className = 'form-label';
+        anchorLabel.textContent = 'Link Text (Anchor)';
+        const anchorInput = document.createElement('input');
+        anchorInput.type = 'text';
+        anchorInput.className = 'form-control anchor-input';
+        anchorInput.placeholder = 'e.g., Event cancelled';
+        anchorInput.value = anchorValue;
+
+        anchorGroup.appendChild(anchorLabel);
+        anchorGroup.appendChild(anchorInput);
+
+        const tagGroup = document.createElement('div');
+        tagGroup.className = 'form-group';
+        const tagLabel = document.createElement('label');
+        tagLabel.className = 'form-label tag-label';
+        tagLabel.textContent = 'URL Parameter Value (' + getParamKey() + ')';
+        const tagInput = document.createElement('input');
+        tagInput.type = 'text';
+        tagInput.className = 'form-control tag-input';
+        tagInput.placeholder = 'e.g., no_event';
+        tagInput.value = tagValue;
+
+        tagGroup.appendChild(tagLabel);
+        tagGroup.appendChild(tagInput);
+
+        const actions = document.createElement('div');
+        actions.className = 'form-group';
+        const spacer = document.createElement('div');
+        spacer.className = 'mb-4';
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-secondary btn-sm btn-icon';
+        removeBtn.textContent = '−';
+        removeBtn.title = 'Remove this row';
+        removeBtn.addEventListener('click', function () {
+          removeRow(row);
+        });
+
+        actions.appendChild(spacer);
+        actions.appendChild(removeBtn);
+
+        row.appendChild(anchorGroup);
+        row.appendChild(tagGroup);
+        row.appendChild(actions);
+
+        return row;
+      }
+
+      function addRow(anchorValue = '', tagValue = '') {
+        const row = createRow(anchorValue, tagValue);
+        linkRowsContainer.appendChild(row);
+        saveState();
+      }
+
+      function removeRow(rowElement) {
+        const rows = linkRowsContainer.querySelectorAll('.link-row');
+        if (rows.length <= 1) {
+          // Minimum 1 Zeile
+          return;
+        }
+        linkRowsContainer.removeChild(rowElement);
+        saveState();
+      }
+
+      function initRows() {
+        linkRowsContainer.innerHTML = '';
+        const defaultRows = translations[currentLanguage].rows;
+        defaultRows.forEach((row) => addRow(row.anchor, row.tag));
+      }
+
+      function switchLanguage(lang) {
+        currentLanguage = lang;
+        baseUrlInput.value = translations[lang].baseUrl;
+        initRows();
+        clearMessages();
+        saveState();
+
+        document.getElementById('langDE').classList.toggle('active', lang === 'de');
+        document.getElementById('langEN').classList.toggle('active', lang === 'en');
+        updateParamKeyUI();
+      }
+
+      function validateUrl(url) {
+        if (!url) return false;
+        try {
+          const parsed = new URL(url);
+          return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function validateEmail(email) {
+        if (!email) return false;
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      function clearMessages() {
+        baseError.textContent = '';
+        rowsError.textContent = '';
+        generateStatus.textContent = '';
+        generateStatus.className = 'status';
+      }
+
+      function urlEncode(value) {
+        return encodeURIComponent(value);
+      }
+
+      function buildLinks() {
+        clearMessages();
+
+        const baseUrl = baseUrlInput.value.trim();
+        const email = emailInput.value.trim();
+
+        let hasError = false;
+
+        if (!validateUrl(baseUrl)) {
+          baseError.textContent = 'Please enter a valid form URL starting with http or https.';
+          hasError = true;
+        }
+
+        if (!validateEmail(email)) {
+          baseError.textContent += (baseError.textContent ? ' ' : '') +
+            'Please enter a valid email address as the identifier.';
+          hasError = true;
+        }
+
+        const rows = Array.from(linkRowsContainer.querySelectorAll('.link-row'));
+        const entries = [];
+
+        rows.forEach((row) => {
+          const anchorInput = row.querySelector('.anchor-input');
+          const tagInput = row.querySelector('.tag-input');
+          const anchor = anchorInput.value.trim();
+          const tag = tagInput.value.trim();
+
+          if (anchor && tag) {
+            entries.push({ anchor, tag });
+          }
+        });
+
+        if (entries.length === 0) {
+          rowsError.textContent = 'Please fill in at least one row with both link text and URL parameter value.';
+          hasError = true;
+        }
+
+        if (hasError) {
+          generateStatus.textContent = 'Links could not be generated. Please check the errors above.';
+          generateStatus.className = 'status status-error';
+          outputArea.innerHTML = '';
+          lastGeneratedLinks = [];
+          copyRichTextBtn.disabled = true;
+          return;
+        }
+
+        const paramKey = getParamKey();
+
+        const links = entries.map((entry) => {
+          const u = new URL(baseUrl);
+          u.searchParams.set('email', email);
+          u.searchParams.set(paramKey, entry.tag);
+
+          return {
+            anchor: entry.anchor,
+            href: u.toString()
+          };
+        });
+
+        renderOutput(links);
+        lastGeneratedLinks = links;
+        copyRichTextBtn.disabled = links.length === 0;
+        generateStatus.textContent = links.length + ' link(s) generated successfully.';
+        generateStatus.className = 'status status-success';
+        saveState();
+      }
+
+      function renderOutput(links) {
+        outputArea.innerHTML = '';
+        if (!links.length) return;
+
+        links.forEach((linkObj) => {
+          const line = document.createElement('div');
+          line.className = 'output-link';
+          const a = document.createElement('a');
+          a.href = linkObj.href;
+          a.textContent = linkObj.anchor;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          line.appendChild(a);
+          outputArea.appendChild(line);
+        });
+      }
+
+      function saveState() {
+        const state = {
+          baseUrl: baseUrlInput.value || '',
+          email: emailInput.value || '',
+          rows: []
+        };
+
+        const rows = Array.from(linkRowsContainer.querySelectorAll('.link-row'));
+        rows.forEach((row) => {
+          const anchorInput = row.querySelector('.anchor-input');
+          const tagInput = row.querySelector('.tag-input');
+          state.rows.push({
+            anchor: anchorInput.value || '',
+            tag: tagInput.value || ''
+          });
+        });
+
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+          // Ignorieren, App funktioniert auch ohne Persistenz
+        }
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) {
+            initRows();
+            return;
+          }
+          const state = JSON.parse(raw);
+          if (state.baseUrl) baseUrlInput.value = state.baseUrl;
+          if (state.email) emailInput.value = state.email;
+
+          linkRowsContainer.innerHTML = '';
+          if (Array.isArray(state.rows) && state.rows.length) {
+            state.rows.forEach((r) => addRow(r.anchor, r.tag));
+          } else {
+            initRows();
+          }
+        } catch (e) {
+          initRows();
+        }
+      }
+
+      function toggleCard2() {
+        isCard2Collapsed = !isCard2Collapsed;
+        applyCollapseUI();
+        
+        try {
+          localStorage.setItem(COLLAPSE_KEY, JSON.stringify({ collapsed: isCard2Collapsed }));
+        } catch (e) {
+          // Ignorieren
+        }
+      }
+
+      function loadCollapseState() {
+        try {
+          const raw = localStorage.getItem(COLLAPSE_KEY);
+          if (raw) {
+            const state = JSON.parse(raw);
+            isCard2Collapsed = !!state.collapsed;
+          }
+        } catch (e) {
+          // Ignorieren
+        }
+        applyCollapseUI();
+      }
+
+      // Event Listener
+      document.getElementById('langDE').addEventListener('click', () => switchLanguage('de'));
+      document.getElementById('langEN').addEventListener('click', () => switchLanguage('en'));
+      document.getElementById('card2Toggle').addEventListener('click', toggleCard2);
+
+      addRowBtn.addEventListener('click', function () {
+        addRow('', '');
+      });
+
+      removeRowBtn.addEventListener('click', function () {
+        const rows = linkRowsContainer.querySelectorAll('.link-row');
+        if (rows.length <= 1) return;
+        linkRowsContainer.removeChild(rows[rows.length - 1]);
+        saveState();
+      });
+
+      generateBtn.addEventListener('click', buildLinks);
+      copyRichTextBtn.addEventListener('click', copyLinksAsRichText);
+
+      baseUrlInput.addEventListener('input', () => {
+        clearMessages();
+        saveState();
+      });
+
+      emailInput.addEventListener('input', () => {
+        clearMessages();
+        saveState();
+      });
+
+      linkRowsContainer.addEventListener('input', (event) => {
+        if (
+          event.target.classList.contains('anchor-input') ||
+          event.target.classList.contains('tag-input')
+        ) {
+          clearMessages();
+          saveState();
+        }
+      });
+
+      // Initialisierung
+      loadState();
+      loadCollapseState();
+      updateParamKeyUI();
+      copyRichTextBtn.disabled = true;
+    })();
+  </script>
+</body>
+</html>
