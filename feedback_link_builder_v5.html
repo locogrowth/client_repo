@@ -183,6 +183,12 @@
       color: var(--color-gray-300);
     }
 
+    .form-control:disabled {
+      background-color: var(--color-gray-200);
+      color: var(--color-gray-400);
+      cursor: not-allowed;
+    }
+
     .helper-text {
       font-size: var(--font-size-sm);
       color: var(--color-text-secondary);
@@ -510,6 +516,7 @@
             placeholder="https://example.com/form"
             value="https://1r4oi.share.hsforms.com/2Tcuo1CR-R9eJn9JKjdJ2aQ"
             autocomplete="off"
+            diabled
           />
           <div class="helper-text">
             The URL of your web form. Parameters will be added automatically.
@@ -972,6 +979,7 @@
 
       function saveState() {
         const state = {
+          language: currentLanguage,
           baseUrl: baseUrlInput.value || '',
           email: emailInput.value || '',
           rows: []
@@ -998,23 +1006,42 @@
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
           if (!raw) {
+            baseUrlInput.value = translations[currentLanguage].baseUrl;
             initRows();
             return;
           }
+      
           const state = JSON.parse(raw);
-          if (state.baseUrl) baseUrlInput.value = state.baseUrl;
-          if (state.email) emailInput.value = state.email;
-
+      
+          if (state.language && (state.language === 'de' || state.language === 'en')) {
+            currentLanguage = state.language;
+          }
+      
+          document.getElementById('langDE').classList.toggle('active', currentLanguage === 'de');
+          document.getElementById('langEN').classList.toggle('active', currentLanguage === 'en');
+      
+          // Always derive base URL from language
+          baseUrlInput.value = translations[currentLanguage].baseUrl;
+      
+          if (state.email) {
+            emailInput.value = state.email;
+          }
+      
           linkRowsContainer.innerHTML = '';
           if (Array.isArray(state.rows) && state.rows.length) {
             state.rows.forEach((r) => addRow(r.anchor, r.tag));
           } else {
             initRows();
           }
+      
+          updateParamKeyUI();
         } catch (e) {
+          currentLanguage = 'de';
+          baseUrlInput.value = translations[currentLanguage].baseUrl;
           initRows();
         }
       }
+
 
       function toggleCard2() {
         isCard2Collapsed = !isCard2Collapsed;
